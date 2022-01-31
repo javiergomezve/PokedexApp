@@ -32,11 +32,20 @@ const SearchScreen = () => {
             return setPokemonFiltered([]);
         }
 
-        setPokemonFiltered(
-            simplePokemonList.filter(poke => {
-                return poke.name.toLowerCase().includes(term?.toLowerCase());
-            }),
-        );
+        if (isNaN(Number(term))) {
+            setPokemonFiltered(
+                simplePokemonList.filter(poke => {
+                    return poke.name
+                        .toLowerCase()
+                        .includes(term?.toLowerCase());
+                }),
+            );
+        } else {
+            const pokemonById = simplePokemonList.find(poke => {
+                return poke.id === term;
+            });
+            setPokemonFiltered(pokemonById ? [pokemonById] : []);
+        }
     }, [term]);
 
     if (isFetching) {
